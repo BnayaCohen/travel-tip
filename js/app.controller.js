@@ -167,10 +167,11 @@ function setLocationByQueryStringParams() {
         lng: +queryStringParams.get('lng') || 0,
     };
 
-    if (!location.name) return;
+    if (!location.lat || !location.lng) return;
 
-    document.querySelector('.current-location').innerText =
-        'Location: ' + location.name;
+    document.querySelector('.current-location').innerText = location.name
+        ? 'Location: ' + location.name
+        : 'Location:';
     mapService.panTo(location.lat, location.lng);
     mapService.addMarker(location.lat, location.lng);
 }
