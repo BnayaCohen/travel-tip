@@ -1,0 +1,15 @@
+/* SETUP  */
+@import 'setup/vars.css';
+
+/* BASE */
+@import 'basic/base.css';
+@import 'basic/buttons.css';
+@import 'basic/helpers.css';
+
+/* COMPONENTS */
+@import 'components/header.css';
+@import 'components/footer.css';
+@import 'components/main.css';
+
+/* MEDIA QUERIES FOR 'DESKTOP FIRST' */
+@import 'mq/mq.css';

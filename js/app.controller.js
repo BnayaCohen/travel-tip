@@ -6,6 +6,7 @@ window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
+window.onDeleteLocation = onDeleteLocation;
 
 function onInit() {
     mapService
@@ -14,6 +15,7 @@ function onInit() {
             console.log('Map is ready');
         })
         .catch(() => console.log('Error: cannot init map'));
+        locService.getLocs().then(renderLocation)
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -48,11 +50,25 @@ function onGetUserPos() {
             console.log('err!!!', err);
         });
 }
-function onPanTo() {
+function onPanTo(lat = 35.6895, lng = 139.6917) {
     console.log('Panning the Map');
-    mapService.panTo(35.6895, 139.6917);
+    mapService.panTo(lat, lng);
 }
 
 // TODO: on map click add location and marker
 
 // TODO: render locations on table
+
+function renderLocation(locations) {
+    var strHtml = locations.map(loc =>
+        `<li class="flex space-around">
+        <p class="location-name" onclick="onPanTo(${loc.lat, loc.lng})">${loc.name}</p> 
+        <button class="del-location-btn btn" onclick="onDeleteLocation('${loc.id}')">X</button>
+    </li>` )
+    document.querySelector('.location-list').innerHTML = strHtml.join('')
+}
+
+function onDeleteLocation(locationId) {
+    locService.deleteLoc(locationId)
+    renderLocation()
+}
