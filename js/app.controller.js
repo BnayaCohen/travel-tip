@@ -1,6 +1,7 @@
 import { locService } from './services/loc.service.js';
 import { mapService } from './services/map.service.js';
 import { storageService } from './services/storage-service.js';
+
 window.onload = onInit;
 window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
@@ -8,8 +9,10 @@ window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onDeleteLocation = onDeleteLocation;
 window.onCopyLink = onCopyLink;
+document.querySelector('.create-location').onSubmit =onCreateLoc
 
 var gLastLoc
+var gLastMapClick
 
 function onInit() {
     // const locs = storageService.loadFromStorage(helpers.STORAGE_KEY);
@@ -69,6 +72,7 @@ function onPanTo(lat, lng, name) {
     document.querySelector('.current-location').innerText =
         'Location: ' + name
     gLastLoc = { lat, lng, name }
+    locService.getWeatherLoc(gLastLoc)
 }
 
 function renderLocation(locations) {
@@ -88,18 +92,38 @@ function onDeleteLocation(locationId) {
     mapService.deleteMarker(locationId);
     _prepLocations();
 }
-function onCreateLoc(ev) {
-    const name = prompt('enter place name');
-    console.log(ev.latLng.lat());
 
+function onOpenModal(ev) {
     const lat = ev.latLng.lat();
     const lng = ev.latLng.lng();
+    gLastMapClick = {
+        lat,
+        lng,
+    }
+    document.body.classList.add('open-modal')
+}
+
+function onCloseModal() {
+    document.body.classList.remove('open-modal')
+}
+
+function onCreateLoc(ev) {
+    ev.preventDefault()
+    const name = document.querySelector('[type="text"]')
+
+    if (!name) onCloseModal()
+
+    const lat = gLastMapClick.lat
+    const lng = gLastMapClick.lng
     const loc = { lat, lng };
     const id = locService.createLoc({ lat, lng, name });
     mapService.addMarker(loc, id);
     _prepLocations();
+    onCloseModal()
 }
 
+window.onOpenModal = onOpenModal;
+window.onCloseModal = onCloseModal;
 window.onCreateLoc = onCreateLoc;
 window.onSearchLoc = onSearchLoc;
 
