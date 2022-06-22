@@ -1,0 +1,13 @@
+@media screen and (min-width: 760px) {
+    .flex.main-content {
+        flex-direction: row-reverse;
+    }
+    .map {
+        transform: translateX(-100%);
+    }
+    .weather-n-loc-container {
+        margin: 1.5rem;
+        flex: 1;
+        height: 100%;
+    }
+}

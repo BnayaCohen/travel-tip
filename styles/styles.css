@@ -13,3 +13,6 @@
 
 /* MEDIA QUERIES FOR 'DESKTOP FIRST' */
 @import 'mq/mq.css';
+
+/* SETUP */
+@import 'setup/vars.css';

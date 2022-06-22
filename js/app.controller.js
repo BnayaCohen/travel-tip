@@ -21,7 +21,7 @@ function onInit() {
             if (!locs || !locs.length) return;
             locs.forEach((loc) => {
                 const cords = { lat: loc.lat, lng: loc.lng };
-                return mapService.addMarker(cords, loc.id);
+                mapService.addMarker(cords, loc.id);
             });
             console.log('Map is ready');
             setLocationByQueryStringParams();
@@ -66,7 +66,7 @@ function onPanTo(lat = 35.6895, lng = 139.6917) {
 function renderLocation(locations) {
     var strHtml = locations.map(
         (loc) =>
-            `<li class="flex space-around">
+            `<li class="flex space-between">
         <p class="location-name" onclick="onPanTo(${loc.lat} ,${loc.lng})">${loc.name}</p> 
             <button class="go-to-location-btn btn" onclick="onPanTo(${loc.lat},${loc.lng})">GO</button>
         <button class="del-location-btn btn" onclick="onDeleteLocation('${loc.id}')">X</button>

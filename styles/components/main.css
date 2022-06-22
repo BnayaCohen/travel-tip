@@ -1,0 +1,27 @@
+.main-content {
+    background-color: var(--secondary-color);
+    color: var(--dark-color);
+    margin: 2rem 0.2rem;
+}
+
+.main-content .btn {
+    color: var(--dark-color);
+}
+
+.main-content .btn:hover {
+    border-color: #18978f;
+}
+
+.map {
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 1.5rem 0;
+}
+
+.location-list {
+    background-color: #54bab9;
+}
+
+.weather-container {
+    background-color: #18978f;
+}
