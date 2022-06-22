@@ -7,10 +7,9 @@ window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onDeleteLocation = onDeleteLocation;
-onCopyLink;
 window.onCopyLink = onCopyLink;
 
-var gLastSelectedLoc = { name: 'home', lat: 33.333, lng: 35.554 };
+var gLastLoc;
 
 function onInit() {
     // const locs = storageService.loadFromStorage(helpers.STORAGE_KEY);
@@ -53,22 +52,32 @@ function onGetLocs() {
 
 function onGetUserPos() {
     getPosition()
-        .then((pos) => onPanTo(pos.coords.latitude, pos.coords.longitude))
+        .then((pos) => {
+            gLastLoc = {
+                lat: pos.coords.latitude,
+                lng: pos.coords.longitude,
+                name: 'Your Location',
+            };
+            mapService.addMarker({ lat: gLastLoc.lat, lng: gLastLoc.lat });
+            onPanTo(gLastLoc.lat, gLastLoc.lng, gLastLoc.name);
+        })
         .catch((err) => {
             console.log('err!!!', err);
         });
 }
-function onPanTo(lat = 35.6895, lng = 139.6917) {
+function onPanTo(lat, lng, name) {
     console.log('Panning the Map');
     mapService.panTo(lat, lng);
+    document.querySelector('.current-location').innerText = 'Location: ' + name;
+    gLastLoc = { lat, lng, name };
 }
 
 function renderLocation(locations) {
     var strHtml = locations.map(
         (loc) =>
             `<li class="flex space-between">
-        <p class="location-name" onclick="onPanTo(${loc.lat} ,${loc.lng})">${loc.name}</p> 
-            <button class="go-to-location-btn btn" onclick="onPanTo(${loc.lat},${loc.lng})">GO</button>
+        <p class="location-name">${loc.name}</p> 
+            <button class="go-to-location-btn btn" onclick="onPanTo(${loc.lat},${loc.lng},'${loc.name}')">GO</button>
         <button class="del-location-btn btn" onclick="onDeleteLocation('${loc.id}')">X</button>
     </li>`
     );
@@ -103,22 +112,25 @@ function onSearchLoc(ev) {
     const elInp = document.querySelector('[type="search"]');
     locService.searchLoc(elInp.value).then((res) => {
         mapService.panTo(res.lat, res.lng);
-        const id = locService.createLoc({
+        const loc = {
             lat: res.lat,
             lng: res.lng,
             name: elInp.value,
-        });
+        };
+        const id = locService.createLoc(loc);
         mapService.addMarker(res, id);
         _prepLocations();
+        gLastLoc = loc;
+        document.querySelector('.current-location').innerText =
+            'Location: ' + gLastLoc.name;
         elInp.value = '';
     });
 }
 
 function onCopyLink() {
-    const queryStringParams = `?name=${gLastSelectedLoc.name}&lat=${gLastSelectedLoc.lat}&lng=${gLastSelectedLoc.lng}`;
+    const queryStringParams = `?name=${gLastLoc.name}&lat=${gLastLoc.lat}&lng=${gLastLoc.lng}`;
     const newUrl =
         'https://bnayacohen.github.io/travel-tip/' + queryStringParams;
-    // window.history.pushState({ path: newUrl }, '', newUrl)
     navigator.clipboard.writeText(newUrl);
 }
 

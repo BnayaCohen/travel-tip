@@ -10,8 +10,8 @@ export const locService = {
 const STORAGE_KEY = 'locsDB';
 
 const locs = [
-    { name: 'Greatplace', lat: 32.047104, lng: 34.832384 },
-    { name: 'Neveragain', lat: 32.047201, lng: 34.832581 },
+    {id:'1', name: 'Greatplace', lat: 32.047104, lng: 34.832384 },
+    {id:'2', name: 'Neveragain', lat: 32.047201, lng: 34.832581 },
 ];
 
 function getLocs() {
@@ -37,8 +37,12 @@ function createLoc({ lat, lng, name }) {
     return loc.id;
 }
 
+function getLocById(id){
+    return locs.findIndex((loc) => loc.id === id);
+}
+
 function deleteLoc(id) {
-    const deletedIdx = locs.findIndex((loc) => loc.id === id);
+    const deletedIdx = getLocById(id)
     locs.splice(deletedIdx, 1);
     storageService.saveToStorage(STORAGE_KEY, locs);
 }
