@@ -9,18 +9,18 @@ window.onGetUserPos = onGetUserPos;
 window.onDeleteLocation = onDeleteLocation; onCopyLink
 window.onCopyLink = onCopyLink;
 
-var gLastSelectedLoc={name:'home',lat:33.333,lng:35.554}
+var gLastSelectedLoc = { name: 'home', lat: 33.333, lng: 35.554 }
 
 function onInit() {
     mapService
         .initMap()
         .then(() => {
             console.log('Map is ready');
+            setLocationByQueryStringParams()
         })
         .catch(() => console.log('Error: cannot init map'));
-        
-        _prepLocations();
-        setLocationByQueryStringParams()
+
+    _prepLocations();
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
