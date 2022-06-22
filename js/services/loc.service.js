@@ -1,7 +1,12 @@
+import { storageService } from './storage-service.js';
+import { utilsService } from './utils-service.js';
 export const locService = {
     getLocs,
+    createLoc,
+    deleteLoc,
 };
-import { storageService } from './storage-service';
+
+const STORAGE_KEY = 'locsDB';
 
 const locs = [
     { name: 'Greatplace', lat: 32.047104, lng: 34.832384 },
@@ -16,21 +21,22 @@ function getLocs() {
     });
 }
 
-function createLoc(data) {
+function createLoc({ lat, lng, name }) {
     const loc = {
         id: utilsService.makeId(),
-        name: data.name,
-        lat: data.lat,
-        lng: data.lng,
-        weather: data.weather,
+        name,
+        lat,
+        lng,
+        // weather: data.weather,
         createdAt: Date.now(),
         updatedAt: Date.now(),
     };
-    // TODO: write functionallity
-    // TODO: push locs to array
-    // TODO: save to storage locs
+    locs.unshift(loc);
+    storageService.saveToStorage(STORAGE_KEY, locs);
 }
 
-function deleteLoc() {
-    // TODO:write funcitonallity
+function deleteLoc(id) {
+    const deletedIdx = locs.findIndex((loc) => loc.id === id);
+    locs.splice(deletedIdx, 1);
+    storageService.saveToStorage(STORAGE_KEY, locs);
 }

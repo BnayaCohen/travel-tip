@@ -13,7 +13,7 @@ function onInit() {
         .then(() => {
             console.log('Map is ready');
         })
-        .catch(() => console.log('Error: cannot init map'));
+        .catch((err) => console.log(err));
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -56,3 +56,16 @@ function onPanTo() {
 // TODO: on map click add location and marker
 
 // TODO: render locations on table
+
+function onCreateLoc(ev) {
+    const name = prompt('enter place name');
+    console.log(ev);
+    const loc = {
+        lat: ev.latLng.lat(),
+        lng: ev.latLng.lng(),
+    };
+    locService.createLoc({ loc, name });
+    mapService.addMarker(loc);
+}
+
+window.onCreateLoc = onCreateLoc;

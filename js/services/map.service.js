@@ -1,10 +1,11 @@
+import { storageService } from './storage-service.js';
+
 export const mapService = {
     initMap,
     addMarker,
     panTo,
 };
-import { storageService } from './storage-service';
-
+const markers = [];
 var gMap;
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
@@ -16,15 +17,17 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
             zoom: 15,
         });
         console.log('Map!', gMap);
+        gMap.addListener('click', onCreateLoc);
     });
 }
 
 function addMarker(loc) {
-    var marker = new google.maps.Marker({
+    const marker = new google.maps.Marker({
         position: loc,
         map: gMap,
         title: 'Hello World!',
     });
+    markers.unshift(marker);
     return marker;
 }
 
