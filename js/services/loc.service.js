@@ -5,12 +5,8 @@ export const locService = {
     createLoc,
     deleteLoc,
 };
-<<<<<<< HEAD
-import { storageService } from './storage-service.js';
-=======
 
 const STORAGE_KEY = 'locsDB';
->>>>>>> f7c380f52dbb75c67322f44df262519323a997ac
 
 const locs = [
     { name: 'Greatplace', lat: 32.047104, lng: 34.832384 },
