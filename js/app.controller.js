@@ -55,10 +55,6 @@ function onPanTo(lat = 35.6895, lng = 139.6917) {
     mapService.panTo(lat, lng);
 }
 
-// TODO: on map click add location and marker
-
-// TODO: render locations on table
-
 function renderLocation(locations) {
     var strHtml = locations.map(
         (loc) =>
