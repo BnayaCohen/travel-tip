@@ -6,7 +6,10 @@ window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
-window.onDeleteLocation = onDeleteLocation;
+window.onDeleteLocation = onDeleteLocation; onCopyLink
+window.onCopyLink = onCopyLink;
+
+var gLastSelectedLoc={name:'home',lat:33.333,lng:35.554}
 
 function onInit() {
     mapService
@@ -15,8 +18,9 @@ function onInit() {
             console.log('Map is ready');
         })
         .catch(() => console.log('Error: cannot init map'));
-
-    _prepLocations();
+        
+        _prepLocations();
+        setLocationByQueryStringParams()
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -83,4 +87,27 @@ window.onCreateLoc = onCreateLoc;
 
 function _prepLocations() {
     locService.getLocs().then(renderLocation);
+}
+
+function onCopyLink() {
+    const queryStringParams = `?name=${gLastSelectedLoc.name}&lat=${gLastSelectedLoc.lat}&lng=${gLastSelectedLoc.lng}`
+    const newUrl = 'https://bnayacohen.github.io/travel-tip/' + queryStringParams
+    // window.history.pushState({ path: newUrl }, '', newUrl)
+    navigator.clipboard.writeText(newUrl)
+}
+
+function setLocationByQueryStringParams() {
+    const queryStringParams = new URLSearchParams(window.location.search)
+    console.log(queryStringParams);
+    const location = {
+        name: queryStringParams.get('name') || '',
+        lat: +queryStringParams.get('lat') || 0,
+        lng: +queryStringParams.get('lng') || 0
+    }
+
+    if (!location.name) return
+
+    document.querySelector('.current-location').innerText = 'Location: ' + location.name
+    mapService.panTo(location.lat, location.lng)
+    mapService.addMarker(location.lat, location.lng)
 }
