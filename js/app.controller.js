@@ -15,7 +15,8 @@ function onInit() {
             console.log('Map is ready');
         })
         .catch(() => console.log('Error: cannot init map'));
-    _prepLocations();
+        
+        locService.getLocs().then(renderLocation)
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -56,23 +57,17 @@ function onPanTo(lat = 35.6895, lng = 139.6917) {
 }
 
 function renderLocation(locations) {
-    var strHtml = locations.map(
-        (loc) =>
-            `<li class="flex space-around">
-        <p class="location-name" onclick="onPanTo(${(loc.lat, loc.lng)})">${
-                loc.name
-            }</p> 
-        <button class="del-location-btn btn" onclick="onDeleteLocation('${
-            loc.id
-        }')">X</button>
-    </li>`
-    );
-    document.querySelector('.location-list').innerHTML = strHtml.join('');
+    var strHtml = locations.map(loc =>
+        `<li class="flex space-around">
+        <p class="location-name" onclick="onPanTo(${loc.lat, loc.lng})">${loc.name}</p> 
+        <button class="del-location-btn btn" onclick="onDeleteLocation('${loc.id}')">X</button>
+    </li>` )
+    document.querySelector('.location-list').innerHTML = strHtml.join('')
 }
 
 function onDeleteLocation(locationId) {
-    locService.deleteLoc(locationId);
-    _prepLocations();
+    locService.deleteLoc(locationId)
+    renderLocation()
 }
 function onCreateLoc(ev) {
     const name = prompt('enter place name');
@@ -83,11 +78,6 @@ function onCreateLoc(ev) {
     };
     locService.createLoc({ loc, name });
     mapService.addMarker(loc);
-    _prepLocations();
 }
 
 window.onCreateLoc = onCreateLoc;
-
-function _prepLocations() {
-    locService.getLocs().then(renderLocation);
-}
