@@ -54,5 +54,6 @@ function _connectGoogleApi() {
 
 function deleteMarker(id) {
     const marker = gMarkers.find((marker) => marker.id === id);
+    if (!marker) return;
     marker.setMap(null);
 }

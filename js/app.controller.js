@@ -27,10 +27,9 @@ function onInit() {
             });
             console.log('Map is ready');
             setLocationByQueryStringParams();
+            _prepLocations();
         })
         .catch(() => console.log('Error: cannot init map'));
-
-    _prepLocations();
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -61,14 +60,22 @@ function onGetUserPos() {
                 lng: pos.coords.longitude,
                 name: 'Your Location',
             };
-            mapService.addMarker({ lat: gLastLoc.lat, lng: gLastLoc.lat });
+            const id = locService.createLoc({
+                lat: gLastLoc.lat,
+                lng: gLastLoc.lng,
+                name: gLastLoc.name,
+            });
+            console.log();
+            mapService.addMarker({ lat: gLastLoc.lat, lng: gLastLoc.lng }, id);
             onPanTo(gLastLoc.lat, gLastLoc.lng, gLastLoc.name);
+            _prepLocations();
         })
         .catch((err) => {
             console.log('err!!!', err);
         });
 }
 function onPanTo(lat, lng, name) {
+    console.log(lat, lng);
     console.log('Panning the Map');
     mapService.panTo(lat, lng);
     document.querySelector('.current-location').innerText = 'Location: ' + name;

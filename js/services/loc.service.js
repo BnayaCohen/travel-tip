@@ -43,7 +43,8 @@ function getLocById(id) {
 }
 
 function deleteLoc(id) {
-    const deletedIdx = getLocById(id)
+    const deletedIdx = getLocById(id);
+    if (deletedIdx === -1) return;
     locs.splice(deletedIdx, 1);
     storageService.saveToStorage(STORAGE_KEY, locs);
 }
@@ -62,7 +63,7 @@ function searchLoc(location) {
         }));
 }
 
-const API_WEATHER_KEY = '7c79fcbabaf515be1d5472e7cb80d7d6'
+const API_WEATHER_KEY = '7c79fcbabaf515be1d5472e7cb80d7d6';
 
 function getWeatherLoc(location) {
     return fetch(
@@ -72,5 +73,6 @@ function getWeatherLoc(location) {
         .then((res) => ({
             temp: res.current.temp,
             state: res.current.weather.main,
-        })).catch(error=>console.log(error))
+        }))
+        .catch((error) => console.log(error));
 }
