@@ -14,8 +14,12 @@ function onInit() {
         .then(() => {
             console.log('Map is ready');
         })
+<<<<<<< HEAD
         .catch(() => console.log('Error: cannot init map'));
         locService.getLocs().then(renderLocation)
+=======
+        .catch((err) => console.log(err));
+>>>>>>> f7c380f52dbb75c67322f44df262519323a997ac
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -59,6 +63,7 @@ function onPanTo(lat = 35.6895, lng = 139.6917) {
 
 // TODO: render locations on table
 
+<<<<<<< HEAD
 function renderLocation(locations) {
     var strHtml = locations.map(loc =>
         `<li class="flex space-around">
@@ -72,3 +77,17 @@ function onDeleteLocation(locationId) {
     locService.deleteLoc(locationId)
     renderLocation()
 }
+=======
+function onCreateLoc(ev) {
+    const name = prompt('enter place name');
+    console.log(ev);
+    const loc = {
+        lat: ev.latLng.lat(),
+        lng: ev.latLng.lng(),
+    };
+    locService.createLoc({ loc, name });
+    mapService.addMarker(loc);
+}
+
+window.onCreateLoc = onCreateLoc;
+>>>>>>> f7c380f52dbb75c67322f44df262519323a997ac
