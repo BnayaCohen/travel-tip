@@ -14,12 +14,8 @@ function onInit() {
         .then(() => {
             console.log('Map is ready');
         })
-<<<<<<< HEAD
         .catch(() => console.log('Error: cannot init map'));
-        locService.getLocs().then(renderLocation)
-=======
-        .catch((err) => console.log(err));
->>>>>>> f7c380f52dbb75c67322f44df262519323a997ac
+    _prepLocations();
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -63,21 +59,25 @@ function onPanTo(lat = 35.6895, lng = 139.6917) {
 
 // TODO: render locations on table
 
-<<<<<<< HEAD
 function renderLocation(locations) {
-    var strHtml = locations.map(loc =>
-        `<li class="flex space-around">
-        <p class="location-name" onclick="onPanTo(${loc.lat, loc.lng})">${loc.name}</p> 
-        <button class="del-location-btn btn" onclick="onDeleteLocation('${loc.id}')">X</button>
-    </li>` )
-    document.querySelector('.location-list').innerHTML = strHtml.join('')
+    var strHtml = locations.map(
+        (loc) =>
+            `<li class="flex space-around">
+        <p class="location-name" onclick="onPanTo(${(loc.lat, loc.lng)})">${
+                loc.name
+            }</p> 
+        <button class="del-location-btn btn" onclick="onDeleteLocation('${
+            loc.id
+        }')">X</button>
+    </li>`
+    );
+    document.querySelector('.location-list').innerHTML = strHtml.join('');
 }
 
 function onDeleteLocation(locationId) {
-    locService.deleteLoc(locationId)
-    renderLocation()
+    locService.deleteLoc(locationId);
+    _prepLocations();
 }
-=======
 function onCreateLoc(ev) {
     const name = prompt('enter place name');
     console.log(ev);
@@ -87,7 +87,11 @@ function onCreateLoc(ev) {
     };
     locService.createLoc({ loc, name });
     mapService.addMarker(loc);
+    _prepLocations();
 }
 
 window.onCreateLoc = onCreateLoc;
->>>>>>> f7c380f52dbb75c67322f44df262519323a997ac
+
+function _prepLocations() {
+    locService.getLocs().then(renderLocation);
+}

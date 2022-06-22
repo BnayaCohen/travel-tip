@@ -5,11 +5,7 @@ export const mapService = {
     addMarker,
     panTo,
 };
-<<<<<<< HEAD
-
-=======
 const markers = [];
->>>>>>> f7c380f52dbb75c67322f44df262519323a997ac
 var gMap;
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {

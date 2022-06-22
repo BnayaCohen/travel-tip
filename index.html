@@ -1,58 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles/styles.css" />
+        <title>TravelTip</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles/styles.css" />
-    <title>TravelTip</title>
-</head>
+    <body>
+        <!-- TODO: build site by example -->
 
-<body>
-    <!-- TODO: build site by example -->
-
-    <header class="flex space-between">
-        <h1>TravelTip</h1>
-        <section class="search-container">
-            <input type="search" class="location-key">
-            <button class="go-btn btn">GO</button>
+        <header class="flex space-between">
+            <h1>TravelTip</h1>
+            <section class="search-container">
+                <input type="search" class="location-key" />
+                <button class="go-btn btn">GO</button>
+            </section>
+            <button class="my-location-btn btn" onclick="onGetUserPos()">
+                My Locatoin
+            </button>
+        </header>
+        <section class="current-location-container flex space-between">
+            <h2 class="current-location">Location: Central Park</h2>
+            <button class="copy-location-btn btn">Copy Location</button>
         </section>
-        <button class="my-location-btn btn" onclick="onGetUserPos()">My Locatoin</button>
-    </header>
-    <section class="current-location-container flex space-between">
-        <h2 class="current-location">Location: Central Park</h2>
-        <button class="copy-location-btn btn">Copy Location</button>
-    </section>
 
-    <main class="flex space-around">
-        <article class="weather-n-loc-container flex flex-column">
-            <div class="weather-container">-weather-</div>
-            <div class="locations-container">
-                <ul class="location-list clean-list">
-                    <li class="flex space-around">
-                        <p class="location-name">Tel Aviv</p> 
-                        <button class="del-location-btn btn">X</button>
-                    </li>
-                </ul>
-            </div>
-        </article>
-        <div id="map" style="width: 50%; height: 400px"></div>
-    </main>
-    <button onclick="onAddMarker()" class="btn-add-marker">
-        Add Marker Speific Location
-    </button>
-    <button onclick="onGetUserPos()" class="btn-user-pos">
-        Get User Position
-    </button>
-    <button onclick="onGetLocs()" class="btn-get-locs">
-        Get Locations
-    </button>
-    <button onclick="onPanTo()" class="btn-pan">Pan Map to Tokyo</button>
+        <main class="flex space-around">
+            <article class="weather-n-loc-container flex flex-column">
+                <div class="weather-container">-weather-</div>
+                <div class="locations-container">
+                    <ul class="location-list clean-list">
+                        <li class="flex space-around">
+                            <p class="location-name">Tel Aviv</p>
+                            <button class="del-location-btn btn">X</button>
+                        </li>
+                    </ul>
+                </div>
+            </article>
+            <div id="map" style="width: 50%; height: 400px"></div>
+        </main>
+        <button onclick="onAddMarker()" class="btn btn-add-marker">
+            Add Marker Speific Location
+        </button>
+        <button onclick="onGetUserPos()" class="btn btn-user-pos">
+            Get User Position
+        </button>
+        <button onclick="onGetLocs()" class="btn btn-get-locs">
+            Get Locations
+        </button>
+        <button onclick="onPanTo()" class="btn btn-pan">
+            Pan Map to Tokyo
+        </button>
 
-    <p>You are at: <span class="user-pos"></span></p>
-    <p>Locations: <span class="locs"></span></p>
+        <p>You are at: <span class="user-pos"></span></p>
+        <p>Locations: <span class="locs"></span></p>
 
-    <script type="module" src="js/app.controller.js"></script>
-</body>
-
+        <script type="module" src="js/app.controller.js"></script>
+    </body>
 </html>
