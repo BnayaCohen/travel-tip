@@ -10,7 +10,7 @@ var gMap;
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
     console.log('InitMap');
-    storageService.saveToStorage()
+    storageService.saveToStorage();
     return _connectGoogleApi().then(() => {
         console.log('google available');
         gMap = new google.maps.Map(document.querySelector('#map'), {

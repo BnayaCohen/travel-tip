@@ -60,12 +60,8 @@ function renderLocation(locations) {
     var strHtml = locations.map(
         (loc) =>
             `<li class="flex space-around">
-        <p class="location-name" onclick="onPanTo(${(loc.lat, loc.lng)})">${
-                loc.name
-            }</p> 
-        <button class="del-location-btn btn" onclick="onDeleteLocation('${
-            loc.id
-        }')">X</button>
+        <p class="location-name" onclick="onPanTo(${loc.lat} ,${loc.lng})">${loc.name}</p> 
+        <button class="del-location-btn btn" onclick="onDeleteLocation('${loc.id}')">X</button>
     </li>`
     );
     document.querySelector('.location-list').innerHTML = strHtml.join('');
@@ -77,12 +73,12 @@ function onDeleteLocation(locationId) {
 }
 function onCreateLoc(ev) {
     const name = prompt('enter place name');
-    console.log(ev);
-    const loc = {
-        lat: ev.latLng.lat(),
-        lng: ev.latLng.lng(),
-    };
-    locService.createLoc({ loc, name });
+    console.log(ev.latLng.lat());
+
+    const lat = ev.latLng.lat();
+    const lng = ev.latLng.lng();
+    const loc = { lat, lng };
+    locService.createLoc({ lat, lng, name });
     mapService.addMarker(loc);
     _prepLocations();
 }
