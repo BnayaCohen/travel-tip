@@ -5,13 +5,14 @@ export const locService = {
     createLoc,
     deleteLoc,
     searchLoc,
+    getWeatherLoc,
 };
 
 const STORAGE_KEY = 'locsDB';
 
 const locs = [
-    {id:'1', name: 'Greatplace', lat: 32.047104, lng: 34.832384 },
-    {id:'2', name: 'Neveragain', lat: 32.047201, lng: 34.832581 },
+    { id: '1', name: 'Greatplace', lat: 32.047104, lng: 34.832384 },
+    { id: '2', name: 'Neveragain', lat: 32.047201, lng: 34.832581 },
 ];
 
 function getLocs() {
@@ -37,7 +38,7 @@ function createLoc({ lat, lng, name }) {
     return loc.id;
 }
 
-function getLocById(id){
+function getLocById(id) {
     return locs.findIndex((loc) => loc.id === id);
 }
 
@@ -59,4 +60,17 @@ function searchLoc(location) {
             lng: res.results[0].geometry.location.lng,
             name: res.results[0]['formatted_address'],
         }));
+}
+
+const API_WEATHER_KEY = '7c79fcbabaf515be1d5472e7cb80d7d6'
+
+function getWeatherLoc(location) {
+    return fetch(
+        `https://api.openweathermap.org/data/3.0/onecall?lat=${location.lat}&lon=${location.lng}&appid=${API_WEATHER_KEY}`
+    )
+        .then((res) => res.json())
+        .then((res) => ({
+            temp: res.current.temp,
+            state: res.current.weather.main,
+        })).catch(error=>console.log(error))
 }
