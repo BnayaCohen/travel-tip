@@ -41,12 +41,7 @@ function onGetLocs() {
 
 function onGetUserPos() {
     getPosition()
-        .then((pos) => {
-            console.log('User position is:', pos.coords);
-            document.querySelector(
-                '.user-pos'
-            ).innerText = `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`;
-        })
+        .then((pos) => onPanTo(pos.coords.latitude,pos.coords.longitude))
         .catch((err) => {
             console.log('err!!!', err);
         });
@@ -60,9 +55,10 @@ function renderLocation(locations) {
     var strHtml = locations.map(
         (loc) =>
             `<li class="flex space-around">
-        <p class="location-name" onclick="onPanTo(${(loc.lat, loc.lng)})">${
+        <p class="location-name" onclick="onPanTo(${loc.lat} ,${loc.lng})">${
                 loc.name
             }</p> 
+            <button class="go-to-location-btn btn" onclick="onPanTo(${(loc.lat, loc.lng)})">GO</button>
         <button class="del-location-btn btn" onclick="onDeleteLocation('${
             loc.id
         }')">X</button>
@@ -92,3 +88,4 @@ window.onCreateLoc = onCreateLoc;
 function _prepLocations() {
     locService.getLocs().then(renderLocation);
 }
+
