@@ -1,6 +1,6 @@
 import { locService } from './services/loc.service.js';
 import { mapService } from './services/map.service.js';
-
+import { storageService } from './services/storage-service.js';
 window.onload = onInit;
 window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
@@ -9,9 +9,16 @@ window.onGetUserPos = onGetUserPos;
 window.onDeleteLocation = onDeleteLocation;
 
 function onInit() {
+    // const locs = storageService.loadFromStorage(helpers.STORAGE_KEY);
     mapService
         .initMap()
         .then(() => {
+            const locs = storageService.loadFromStorage('locsDB');
+            if (!locs || !locs.length) return;
+            locs.forEach((loc) => {
+                const cords = { lat: loc.lat, lng: loc.lng };
+                return mapService.addMarker(cords, loc.id);
+            });
             console.log('Map is ready');
         })
         .catch(() => console.log('Error: cannot init map'));
@@ -65,6 +72,7 @@ function renderLocation(locations) {
 
 function onDeleteLocation(locationId) {
     locService.deleteLoc(locationId);
+    mapService.deleteMarker(locationId);
     _prepLocations();
 }
 function onCreateLoc(ev) {
@@ -74,13 +82,29 @@ function onCreateLoc(ev) {
     const lat = ev.latLng.lat();
     const lng = ev.latLng.lng();
     const loc = { lat, lng };
-    locService.createLoc({ lat, lng, name });
-    mapService.addMarker(loc);
+    const id = locService.createLoc({ lat, lng, name });
+    mapService.addMarker(loc, id);
     _prepLocations();
 }
 
 window.onCreateLoc = onCreateLoc;
+window.onSearchLoc = onSearchLoc;
 
 function _prepLocations() {
     locService.getLocs().then(renderLocation);
+}
+function onSearchLoc(ev) {
+    ev.preventDefault();
+    const elInp = document.querySelector('[type="search"]');
+    locService.searchLoc(elInp.value).then((res) => {
+        mapService.panTo(res.lat, res.lng);
+        const id = locService.createLoc({
+            lat: res.lat,
+            lng: res.lng,
+            name: elInp.value,
+        });
+        mapService.addMarker(res, id);
+        _prepLocations();
+        elInp.value = '';
+    });
 }

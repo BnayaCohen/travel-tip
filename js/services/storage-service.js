@@ -4,9 +4,10 @@ export const storageService = {
 };
 
 function saveToStorage(key, val) {
-    localStorage.setItem(key, val);
+    localStorage.setItem(key, JSON.stringify(val));
 }
 
 function loadFromStorage(key) {
-    return localStorage.getItem(key);
+    const val = localStorage.getItem(key);
+    return JSON.parse(val);
 }

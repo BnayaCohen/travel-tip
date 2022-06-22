@@ -4,6 +4,7 @@ export const locService = {
     getLocs,
     createLoc,
     deleteLoc,
+    searchLoc,
 };
 
 const STORAGE_KEY = 'locsDB';
@@ -33,10 +34,25 @@ function createLoc({ lat, lng, name }) {
     };
     locs.unshift(loc);
     storageService.saveToStorage(STORAGE_KEY, locs);
+    return loc.id;
 }
 
 function deleteLoc(id) {
     const deletedIdx = locs.findIndex((loc) => loc.id === id);
     locs.splice(deletedIdx, 1);
     storageService.saveToStorage(STORAGE_KEY, locs);
+}
+
+const API_KEY = 'AIzaSyAl-v0FWCCcT0o6UrjDE17w4NIVtAa9AAI';
+
+function searchLoc(location) {
+    return fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${API_KEY}`
+    )
+        .then((res) => res.json())
+        .then((res) => ({
+            lat: res.results[0].geometry.location.lat,
+            lng: res.results[0].geometry.location.lng,
+            name: res.results[0]['formatted_address'],
+        }));
 }

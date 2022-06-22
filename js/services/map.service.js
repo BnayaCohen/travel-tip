@@ -4,8 +4,9 @@ export const mapService = {
     initMap,
     addMarker,
     panTo,
+    deleteMarker,
 };
-const markers = [];
+const gMarkers = [];
 var gMap;
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
@@ -22,13 +23,14 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
     });
 }
 
-function addMarker(loc) {
+function addMarker(loc, id) {
     const marker = new google.maps.Marker({
         position: loc,
         map: gMap,
         title: 'Hello World!',
     });
-    markers.unshift(marker);
+    marker.id = id;
+    gMarkers.unshift(marker);
     return marker;
 }
 
@@ -49,4 +51,9 @@ function _connectGoogleApi() {
         elGoogleApi.onload = resolve;
         elGoogleApi.onerror = () => reject('Google script failed to load');
     });
+}
+
+function deleteMarker(id) {
+    const marker = gMarkers.find((marker) => marker.id === id);
+    marker.setMap(null);
 }
