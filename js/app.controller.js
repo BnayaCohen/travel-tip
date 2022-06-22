@@ -9,7 +9,7 @@ window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onDeleteLocation = onDeleteLocation;
 window.onCopyLink = onCopyLink;
-document.querySelector('.create-location').onSubmit = onCreateLoc;
+document.querySelector('.create-location').onsubmit = onCreateLoc;
 
 let gLastLoc;
 let gLastMapClick;
@@ -110,7 +110,7 @@ function onCloseModal() {
 
 function onCreateLoc(ev) {
     ev.preventDefault();
-    const name = document.querySelector('[type="text"]');
+    const name = document.querySelector('[type="text"]').value;
 
     if (!name) onCloseModal();
 

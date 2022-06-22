@@ -10,7 +10,7 @@
 @import 'components/header.css';
 @import 'components/footer.css';
 @import 'components/main.css';
-
+@import 'components/modal.css';
 /* MEDIA QUERIES FOR 'DESKTOP FIRST' */
 @import 'mq/mq.css';
 

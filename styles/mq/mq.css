@@ -10,4 +10,12 @@
         flex: 1;
         height: 100%;
     }
+    body.open-modal .modal {
+        width: 300px;
+        height: 300px;
+    }
+    body.open-modal .create-location {
+        width: 250px;
+        height: 250px;
+    }
 }

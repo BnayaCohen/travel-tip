@@ -1,0 +1,43 @@
+body .overlay,
+body .modal,
+body .create-location {
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: 40%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 1.2s;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+}
+
+body.open-modal .overlay {
+    width: 250vh;
+    height: 250vh;
+    opacity: 1;
+}
+
+body.open-modal .modal {
+    background-color: #333;
+    border: none;
+    width: 200px;
+    height: 200px;
+    opacity: 1;
+    border-radius: 0;
+    color: white;
+}
+
+body.open-modal .create-location {
+    background-color: #187fa1;
+    opacity: 1;
+    width: 150px;
+    height: 150px;
+    border-radius: 0;
+    left: 50%;
+    font-size: 0.8rem;
+}
+body.open-modal .create-location > input {
+    width: 80%;
+}

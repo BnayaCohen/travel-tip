@@ -84,3 +84,10 @@
 .text-light {
     color: var(--light-color);
 }
+
+.text-align-c {
+    text-align: center;
+}
+.text-align-r {
+    text-align: right;
+}
