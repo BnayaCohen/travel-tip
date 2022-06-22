@@ -3,6 +3,7 @@ export const mapService = {
     addMarker,
     panTo,
 };
+import { storageService } from './storage-service';
 
 var gMap;
 
