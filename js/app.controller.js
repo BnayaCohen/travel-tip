@@ -1,6 +1,6 @@
 import { locService } from './services/loc.service.js';
 import { mapService } from './services/map.service.js';
-import { storageService } from './services/storage-service.js';
+// import { storageService } from './services/storage-service.js';
 
 window.onload = onInit;
 window.onAddMarker = onAddMarker;
@@ -16,8 +16,8 @@ let gLastMapClick;
 
 function onInit() {
     // const locs = storageService.loadFromStorage(helpers.STORAGE_KEY);
-    mapService.initMap();
-    const locs = locService
+    mapService.initMap()
+    locService
         .getLocs()
         .then((locs) => {
             locs.forEach((loc) => {
@@ -48,26 +48,29 @@ function onAddMarker() {
 function onGetLocs() {
     locService.getLocs().then((locs) => {
         console.log('Locations:', locs);
-        document.querySelector('.locs').innerText = JSON.stringify(locs);
+        // document.querySelector('.locs').innerText = JSON.stringify(locs);
     });
 }
 
 function onGetUserPos() {
     getPosition()
-        .then((pos) => {
-            gLastLoc = {
-                lat: pos.coords.latitude,
-                lng: pos.coords.longitude,
-                name: 'Your Location',
-            };
+        .then(({ coords:
+            { latitude, longitude }
+        }) => {
+            // gLastLoc = {
+            //     lat: pos.coords.latitude,
+            //     lng: pos.coords.longitude,
+            //     name: 'Your Location',
+            // };
+            const name = 'Your Location'
             const id = locService.createLoc({
-                lat: gLastLoc.lat,
-                lng: gLastLoc.lng,
-                name: gLastLoc.name,
+                lat: latitude,
+                lng: longitude,
+                name,
             });
-            console.log();
-            mapService.addMarker({ lat: gLastLoc.lat, lng: gLastLoc.lng }, id);
-            onPanTo(gLastLoc.lat, gLastLoc.lng, gLastLoc.name);
+            // console.log();
+            mapService.addMarker({ lat: latitude, lng: longitude }, id);
+            onPanTo(latitude, longitude, name);
             _prepLocations();
         })
         .catch((err) => {
@@ -75,8 +78,8 @@ function onGetUserPos() {
         });
 }
 function onPanTo(lat, lng, name) {
-    console.log(lat, lng);
-    console.log('Panning the Map');
+    // console.log(lat, lng);
+    // console.log('Panning the Map');
     mapService.panTo(lat, lng);
     document.querySelector('.current-location').innerText = 'Location: ' + name;
     gLastLoc = { lat, lng, name };
@@ -140,13 +143,13 @@ function _prepLocations() {
 }
 function onSearchLoc(ev) {
     ev.preventDefault();
-    const elInp = document.querySelector('[type="search"]');
-    locService.searchLoc(elInp.value).then((res) => {
+    const elInput = document.querySelector('[type="search"]');
+    locService.searchLoc(elInput.value).then((res) => {
         mapService.panTo(res.lat, res.lng);
         const loc = {
             lat: res.lat,
             lng: res.lng,
-            name: elInp.value,
+            name: elInput.value,
         };
         const id = locService.createLoc(loc);
         mapService.addMarker(res, id);
@@ -154,13 +157,14 @@ function onSearchLoc(ev) {
         gLastLoc = loc;
         document.querySelector('.current-location').innerText =
             'Location: ' + gLastLoc.name;
-        elInp.value = '';
+        elInput.value = '';
     });
 }
 
 function onCopyLink() {
     const queryStringParams = `?name=${gLastLoc.name}&lat=${gLastLoc.lat}&lng=${gLastLoc.lng}`;
     const newUrl =
+
         'https://bnayacohen.github.io/travel-tip/' + queryStringParams;
     navigator.clipboard.writeText(newUrl);
 }
@@ -180,5 +184,5 @@ function setLocationByQueryStringParams() {
         ? 'Location: ' + location.name
         : 'Location:';
     mapService.panTo(location.lat, location.lng);
-    mapService.addMarker(location.lat, location.lng);
+    mapService.addMarker({lat:location.lat, lng:location.lng});
 }

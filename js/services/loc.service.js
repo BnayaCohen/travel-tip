@@ -1,5 +1,6 @@
 import { storageService } from './storage-service.js';
 import { utilsService } from './utils-service.js';
+// import axios from 
 export const locService = {
     getLocs,
     createLoc,
