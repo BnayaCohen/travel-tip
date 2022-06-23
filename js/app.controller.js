@@ -16,18 +16,18 @@ let gLastMapClick;
 
 function onInit() {
     // const locs = storageService.loadFromStorage(helpers.STORAGE_KEY);
-    mapService
-        .initMap()
-        .then(() => {
-            const locs = storageService.loadFromStorage('locsDB');
-            if (!locs || !locs.length) return;
+    mapService.initMap();
+    const locs = locService
+        .getLocs()
+        .then((locs) => {
             locs.forEach((loc) => {
                 const cords = { lat: loc.lat, lng: loc.lng };
                 mapService.addMarker(cords, loc.id);
             });
             console.log('Map is ready');
             setLocationByQueryStringParams();
-            _prepLocations();
+            renderLocation(locs);
+            // _prepLocations();
         })
         .catch(() => console.log('Error: cannot init map'));
 }
